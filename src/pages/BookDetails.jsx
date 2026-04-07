@@ -1,9 +1,25 @@
-import React, { use } from 'react'
+import React, { use, useState } from 'react'
 import { useParams } from 'react-router'
 
 const booksPromise = fetch("/booksData.json").then(res => res.json())
 
 const BookDetails = () => {
+
+  const [storeBooks, setStoreBooks] = useState([])
+  const [wishlist, setWishlist] = useState([])
+
+  const handleMarkAsRead = (id) => {
+    const newList = [...storeBooks, id]
+    setStoreBooks(newList)
+    console.log("Read List:", newList)
+  }
+
+  const handleWishlist = (id) => {
+    const newWish = [...wishlist, id]
+    setWishlist(newWish)
+    console.log("Wishlist:", newWish)
+  }
+
   const books = use(booksPromise)
   const { bookId } = useParams()
 
@@ -66,9 +82,21 @@ const BookDetails = () => {
               </span>
             </div>
 
-            <button className="btn btn-primary w-full md:w-fit rounded-full px-8">
-              Read Now 📖
-            </button>
+            <div className='flex gap-4'>
+              <button 
+                onClick={() => handleMarkAsRead(book.bookId)} 
+                className="btn btn-primary w-full md:w-fit rounded-full px-8"
+              >
+                Mark as Read
+              </button>
+
+              <button 
+                onClick={() => handleWishlist(book.bookId)} 
+                className="btn btn-secondary w-full md:w-fit rounded-full px-8"
+              >
+                Add to Wishlist
+              </button>
+            </div>
 
           </div>
 
