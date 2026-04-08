@@ -1,5 +1,5 @@
 import React, { use, useState } from 'react'
-import { useParams } from 'react-router'
+import { useParams, useNavigate } from 'react-router-dom'
 
 const booksPromise = fetch("/booksData.json").then(res => res.json())
 
@@ -8,24 +8,39 @@ const BookDetails = () => {
   const [storeBooks, setStoreBooks] = useState([])
   const [wishlist, setWishlist] = useState([])
 
-  const handleMarkAsRead = (id) => {
-    const newList = [...storeBooks, id]
-    setStoreBooks(newList)
-    console.log("Read List:", newList)
-  }
-
-  const handleWishlist = (id) => {
-    const newWish = [...wishlist, id]
-    setWishlist(newWish)
-    console.log("Wishlist:", newWish)
-  }
-
+  const navigate = useNavigate()
   const books = use(booksPromise)
   const { bookId } = useParams()
 
   const book = books.find(
     (item) => item.bookId === parseInt(bookId)
   )
+
+  
+  const handleMarkAsRead = (id) => {
+    let stored = JSON.parse(localStorage.getItem("readBooks")) || []
+
+    if (!stored.includes(id)) {
+      stored.push(id)
+      localStorage.setItem("readBooks", JSON.stringify(stored))
+    }
+
+    setStoreBooks(stored)
+    navigate("/books")
+  }
+
+  
+  const handleWishlist = (id) => {
+    let stored = JSON.parse(localStorage.getItem("wishlistBooks")) || []
+
+    if (!stored.includes(id)) {
+      stored.push(id)
+      localStorage.setItem("wishlistBooks", JSON.stringify(stored))
+    }
+
+    setWishlist(stored)
+    navigate("/wishlist")
+  }
 
   if (!book) {
     return <p className="text-center mt-10 text-red-500">Book not found ❌</p>

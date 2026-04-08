@@ -1,9 +1,10 @@
 import Mainlayout from "../layout/Mainlayout";
 import BookDetails from "../pages/BookDetails";
-import Books from "../pages/books/Books";
+import ReadBooks from "../pages/books/ReadBooks";
+import Wishlist from "../pages/books/Wishlist";
 import ErrorPage from "../pages/ErrorPage";
 import Homepage from "../pages/homepage/Homepage";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
   {
@@ -14,12 +15,16 @@ export const router = createBrowserRouter([
         index:true,
         element:<Homepage />
       },{
-        path:"/books",
-        element:<Books />
+        path:"books",
+        element:<ReadBooks />
       },
       {
-        path:"/bookDetails/:bookId",
+        path:"bookDetails/:bookId",
         element: <BookDetails />
+      },
+      {
+        path:"/wishlist",
+        element:<Wishlist />
       }
     ],
     errorElement: <ErrorPage />,
