@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 const Wishlist = () => {
   const [books, setBooks] = useState([])
@@ -12,6 +13,13 @@ const Wishlist = () => {
     const stored = JSON.parse(localStorage.getItem("wishlistBooks")) || []
     setWishIds(stored)
   }, [])
+
+  const removeFromWishlist = (id) => {
+    const updated = wishIds.filter(bookId => bookId !== id)
+    setWishIds(updated)
+    localStorage.setItem("wishlistBooks", JSON.stringify(updated))
+    toast.success("Removed from wishlist")
+  }
 
   const wishlistBooks = books.filter(book =>
     wishIds.includes(book.bookId)
@@ -27,8 +35,17 @@ const Wishlist = () => {
         </h2>
 
         {wishlistBooks.length === 0 ? (
-          <div className="text-center text-gray-500 text-base sm:text-lg">
-            No wishlist books yet 😢
+          <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
+
+            <div className="text-6xl mb-4">💖</div>
+
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-700 mb-2">
+              No Wishlist Books Yet
+            </h2>
+
+            <p className="text-gray-500 text-sm sm:text-base mb-6 max-w-md">
+              You haven’t added any books to your wishlist. Save your favorite books for later!
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -67,10 +84,19 @@ const Wishlist = () => {
                     </span>
                   </div>
 
-                  <div className="card-actions justify-end mt-4">
-                    <button className="btn btn-sm btn-outline btn-secondary rounded-full w-full sm:w-auto">
+                  <div className="card-actions justify-between mt-4">
+
+                    <button className="btn btn-sm btn-outline btn-secondary rounded-full">
                       View Details
                     </button>
+
+                    <button
+                      onClick={() => removeFromWishlist(book.bookId)}
+                      className="btn btn-sm btn-error text-white rounded-full"
+                    >
+                      Remove
+                    </button>
+
                   </div>
 
                 </div>
