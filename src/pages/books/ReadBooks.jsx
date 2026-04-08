@@ -38,7 +38,7 @@ const ReadBooks = () => {
               className="card bg-base-100 shadow-xl hover:shadow-2xl transition duration-300 rounded-2xl overflow-hidden"
             >
 
-              {/* Image */}
+              
               <figure className="h-46 p-4  overflow-hidden">
                 <img
                   src={book.image}
